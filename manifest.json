@@ -1,0 +1,19 @@
+{
+  "name": "microcorruption list reader",
+  "version": "0.1",
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://microcorruption.com/cpu/debugger*"],
+      "js": ["mc-1.js"]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "core.png",
+    "default_title": "microcorruption"
+  },
+  "manifest_version": 2
+}
