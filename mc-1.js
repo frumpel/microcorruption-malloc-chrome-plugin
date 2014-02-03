@@ -30,17 +30,17 @@
   function readMem(memLocStrLoHex) {
     // find and print info about first list element
     // memLocStrLoHex = "2400"
-    memLocStrHiHex = (parseInt(memLocStrLoHex,16)+1).toString(16).toUpperCase()
+    var memLocStrHiHex = (parseInt(memLocStrLoHex,16)+1).toString(16).toLowerCase()
 
-    memLoLoc=document.getElementById("memorylocation" + memLocStrLoHex)
-    if (memLoLoc) { memLoVal=parseInt(memLoLoc.innerHTML,16) }
-    else          { memLoVal=0 }
+    var memLoLoc=document.getElementById("memorylocation" + memLocStrLoHex)
+    if (memLoLoc) { var memLoVal=parseInt(memLoLoc.innerHTML,16) }
+    else          { var memLoVal=0 }
 
     memHiLoc=document.getElementById("memorylocation" + memLocStrHiHex)
-    if (memHiLoc) { memHiVal=parseInt(memHiLoc.innerHTML,16) }
-    else          { memHiVal=0 }
+    if (memHiLoc) { var memHiVal=parseInt(memHiLoc.innerHTML,16) }
+    else          { var memHiVal=0 }
 
-    memValue = ( memHiVal * 256 + memLoVal).toString(16).toUpperCase()
+    var memValue = ( memHiVal * 256 + memLoVal).toString(16).toLowerCase()
 
     return memValue;
   }
@@ -48,8 +48,8 @@
   // recursively examine malloc list. It doesn't test for proper end,
   // just maximum depth
   function getListElement(addrStrPrevPtr,maxFollow) {
-    var addrStrNextPtr = (parseInt(addrStrPrevPtr,16)+2).toString(16).toUpperCase()
-    var addrStrSizePtr = (parseInt(addrStrPrevPtr,16)+4).toString(16).toUpperCase()
+    var addrStrNextPtr = (parseInt(addrStrPrevPtr,16)+2).toString(16).toLowerCase()
+    var addrStrSizePtr = (parseInt(addrStrPrevPtr,16)+4).toString(16).toLowerCase()
 
     var curElemPrevPtr = readMem(addrStrPrevPtr)
     var curElemNextPtr = readMem(addrStrNextPtr)
@@ -75,26 +75,26 @@
 
   function printMallocInfo() {
 
-    myStr = ""
+    var myStr = ""
 
-    listStart= readMem("2400")
+    var listStart= readMem("2400")
     myStr += "List start:  0x" + listStart+"<br>"
 
-    listSize = readMem("2402")
+    var listSize = readMem("2402")
     myStr += "List maxmem: 0x" + listSize +"<br>"
 
-    listInit = readMem("2404")
+    var listInit = readMem("2404")
     myStr += "List init:   0x" + listInit +"<br>"
 
     myStr += "<br>"
 
-    eloc = document.getElementById('mc-list')
+    var eloc = document.getElementById('mc-list')
     if (eloc) {
       eloc.innerHTML = myStr
     }
 
     if ((listStart != "0" ) && (listInit == "0")) {
-      eloc.innerHTML +=  getListElement(listStart,10)
+      eloc.innerHTML +=  getListElement(listStart,50)
     } else {
       eloc.innerHTML += "Waiting for list to be initialized"
     }
