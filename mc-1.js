@@ -40,7 +40,7 @@
     if (memHiLoc) { memHiVal=parseInt(memHiLoc.innerHTML,16) }
     else          { memHiVal=0 }
 
-    memValue = ( memHiVal * 256 + memLoVal).toString(16)
+    memValue = ( memHiVal * 256 + memLoVal).toString(16).toUpperCase()
 
     return memValue;
   }
@@ -55,8 +55,9 @@
     var curElemNextPtr = readMem(addrStrNextPtr)
     var curElemSizeHex = readMem(addrStrSizePtr)
 
-    var curElemSizeDec = (curElemSizeHex & ~1) / 2
-    if (curElemSizeHex & 1) { var curElemAlloc = "(used)" }
+    var curElemSizeNum = parseInt(curElemSizeHex,16)
+    var curElemSizeDec = ((curElemSizeNum & ~1) / 2).toString()
+    if (curElemSizeNum & 1) { var curElemAlloc = "(used)" }
     else                    { var curElemAlloc = "(free)" }
     
 
@@ -67,7 +68,7 @@
     return "Prev(0x" + addrStrPrevPtr + "): 0x" + curElemPrevPtr + "<br>" +
            "Next(0x" + addrStrNextPtr + "): 0x" + curElemNextPtr + "&lt;-&gt;" +
            "Prev(0x" + curElemNextPtr + "): 0x" + nxtElemPrevPtr + "<br>" +
-           "Size(0x" + addrStrSizePtr + "): " + curElemSizeDec + " " + curElemAlloc    + "<br>" +
+           "Size(0x" + addrStrSizePtr + "): 0x" + curElemSizeHex + ": " + curElemSizeDec + "bytes " + curElemAlloc    + "<br>" +
            "<br>" + 
            tailStr
   }
