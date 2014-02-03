@@ -47,7 +47,7 @@
 
   // recursively examine malloc list. It doesn't test for proper end,
   // just maximum depth
-  function getListElement(addrStrPrevPtr,maxFollow) {
+  function getListElement(addrStrPrevPtr,maxFollow,loopBackEnd) {
     var addrStrNextPtr = (parseInt(addrStrPrevPtr,16)+2).toString(16).toLowerCase()
     var addrStrSizePtr = (parseInt(addrStrPrevPtr,16)+4).toString(16).toLowerCase()
 
@@ -64,11 +64,11 @@
     var nxtElemPrevPtr = readMem(curElemNextPtr)
 
     var tailStr = ""
-    if (maxFollow>0) { tailStr = getListElement(curElemNextPtr,maxFollow-1) }
+    if ((maxFollow>0) && (curElemNextPtr != loopBackEnd)) { tailStr = getListElement(curElemNextPtr,maxFollow-1,loopBackEnd) }
     return "Prev(0x" + addrStrPrevPtr + "): 0x" + curElemPrevPtr + "<br>" +
            "Next(0x" + addrStrNextPtr + "): 0x" + curElemNextPtr + "&lt;-&gt;" +
            "Prev(0x" + curElemNextPtr + "): 0x" + nxtElemPrevPtr + "<br>" +
-           "Size(0x" + addrStrSizePtr + "): 0x" + curElemSizeHex + ": " + curElemSizeDec + "bytes " + curElemAlloc    + "<br>" +
+           "Size(0x" + addrStrSizePtr + "): 0x" + curElemSizeHex + ": " + curElemSizeDec + " bytes " + curElemAlloc    + "<br>" +
            "<br>" + 
            tailStr
   }
@@ -94,7 +94,7 @@
     }
 
     if ((listStart != "0" ) && (listInit == "0")) {
-      eloc.innerHTML +=  getListElement(listStart,50)
+      eloc.innerHTML +=  getListElement(listStart,50,listStart)
     } else {
       eloc.innerHTML += "Waiting for list to be initialized"
     }
